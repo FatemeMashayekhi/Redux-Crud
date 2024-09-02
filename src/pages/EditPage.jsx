@@ -19,7 +19,7 @@ export default function EditPage() {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(editUsers(userId, { name, mail }));
+    dispatch(editUsers({ userId, name, mail }));
     navigate("/");
   };
 

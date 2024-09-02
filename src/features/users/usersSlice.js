@@ -38,12 +38,12 @@ export const deleteUsers = createAsyncThunk("users/deleteUsers", async (id) => {
 
 export const editUsers = createAsyncThunk(
   "users/editUsers",
-  async (userId, editedUser) => {
+  async ({ userId, name, mail }) => {
     try {
-      const res = await axios.put(
-        `http://localhost:3000/users/${userId}`,
-        editedUser
-      );
+      const res = await axios.put(`http://localhost:3000/users/${userId}`, {
+        name,
+        email: mail,
+      });
     } catch (e) {
       console.log(e.message);
     }
