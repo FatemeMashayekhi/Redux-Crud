@@ -1,29 +1,27 @@
-import { useDispatch, useSelector } from "react-redux";
-import { postUsers } from "../features/users/usersSlice";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { usePostDataMutation } from "../features/users/usersApi";
 
 export default function AddPage() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [mail, setMail] = useState("");
-  const { loading, error } = useSelector((store) => store.users);
+
+  const [postUser, { isLoading, isError, error }] = usePostDataMutation();
   const submitHandler = () => {
-    dispatch(
-      postUsers({
-        name: name,
-        email: mail,
-        id: +new Date(),
-      })
-    );
+    postUser({
+      name: name,
+      email: mail,
+      id: +new Date(),
+    });
+
     navigate("/");
   };
 
-  if (loading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
-  if (error) {
+  if (isError) {
     return <div>{error}</div>;
   }
   return (

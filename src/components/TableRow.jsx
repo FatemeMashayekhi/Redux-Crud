@@ -1,11 +1,18 @@
+/* eslint-disable no-unused-vars */
 import { useDispatch } from "react-redux";
 import { deleteUsers, getUsers } from "../features/users/usersSlice";
 import { useNavigate } from "react-router-dom";
+import { useDeleteDataMutation } from "../features/users/usersApi";
 
 /* eslint-disable react/prop-types */
 export default function TableRow({ user }) {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [deleteUser, { isError }] = useDeleteDataMutation();
+
+  const deleteHandler = (e) => {
+    e.preventDefault();
+    deleteUser(user.id);
+  };
 
   return (
     <>
@@ -24,9 +31,7 @@ export default function TableRow({ user }) {
           <button
             type="button"
             className="bg-red-600 text-white p-2 rounded-lg"
-            onClick={() =>
-              dispatch(deleteUsers(user.id)).then(() => dispatch(getUsers()))
-            }
+            onClick={deleteHandler}
           >
             Delete
           </button>

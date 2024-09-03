@@ -1,23 +1,16 @@
-import { useDispatch, useSelector } from "react-redux";
 import TableRow from "../components/TableRow";
-import { useEffect } from "react";
-import { getUsers } from "../features/users/usersSlice";
 import { useNavigate } from "react-router-dom";
+import { useGetDataQuery } from "../features/users/usersApi";
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { usersList, loading, error } = useSelector((store) => store.users);
+  const { data: usersList, isLoading, isError, error } = useGetDataQuery();
 
-  useEffect(() => {
-    dispatch(getUsers());
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  if (error) {
+  if (isError) {
     return <div>{error}</div>;
   }
   return (

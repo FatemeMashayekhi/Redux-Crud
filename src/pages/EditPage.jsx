@@ -1,11 +1,18 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { editUsers } from "../features/users/usersSlice";
+import {
+  useGetDataQuery,
+  usePutDataMutation,
+} from "../features/users/usersApi";
 
 export default function EditPage() {
+  const [putUser, { isLoading }] = usePutDataMutation();
+  const { data: usersList } = useGetDataQuery();
   const { userId } = useParams();
-  const { usersList } = useSelector((store) => store.users);
+
   console.log(userId);
   const selectedUser = usersList?.find(
     (user) => user.id === parseInt(userId, 10)
@@ -19,7 +26,11 @@ export default function EditPage() {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(editUsers({ userId, name, mail }));
+    putUser({
+      id: userId,
+      name: name,
+      email: mail,
+    });
     navigate("/");
   };
 
